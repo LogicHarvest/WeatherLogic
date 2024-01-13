@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #weather-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <div id="weather-container">
+        <label for="city">Enter City:</label>
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+        <h2 id="location"></h2>
+        <p id="temperature"></p>
+        <p id="description"></p>
+    </div>
+
+    <script>
+        function getWeather() {
+            const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+            const city = document.getElementById('city').value;
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    const location = data.name + ', ' + data.sys.country;
+                    const temperature = 'Temperature: ' + data.main.temp + '°C';
+                    const description = 'Description: ' + data.weather[0].description;
+
+                    document.getElementById('location').textContent = location;
+                    document.getElementById('temperature').textContent = temperature;
+                    document.getElementById('description').textContent = description;
+                })
+                .catch(error => console.error('Error fetching weather data:', error));
+        }
+    </script>
+</body>
+</html>
